@@ -39,15 +39,15 @@ public class UserApp {
     private BigDecimal weight;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "genre",columnDefinition = "genre_type", nullable = false)
+    @Column(name = "genre")
     private Genre genre;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "goal", columnDefinition = "goal_type", nullable = false)
+    @Column(name = "goal")
     private Goal goal;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "phisical_activity", columnDefinition = "phisical_activity_type" , nullable = false)
+    @Column(name = "phisical_activity")
     private PhisicalActivity phisical_activity;
 
 }

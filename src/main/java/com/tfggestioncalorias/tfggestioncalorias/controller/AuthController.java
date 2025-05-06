@@ -21,6 +21,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody UserRegisterDto request){
+
         String response = userService.registerUser(request);
         if("Usuario registrado correctamente".equals(response)){
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
