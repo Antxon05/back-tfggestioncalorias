@@ -1,11 +1,14 @@
 package com.tfggestioncalorias.tfggestioncalorias.service;
 
-import com.tfggestioncalorias.tfggestioncalorias.dto.UserInfoDto;
-import com.tfggestioncalorias.tfggestioncalorias.dto.UserRegisterDto;
+import com.tfggestioncalorias.tfggestioncalorias.config.JwtUtil;
+import com.tfggestioncalorias.tfggestioncalorias.dto.userodtos.UserInfoDto;
+import com.tfggestioncalorias.tfggestioncalorias.dto.userodtos.UserRegisterDto;
+import com.tfggestioncalorias.tfggestioncalorias.dto.userodtos.UserUpdateDto;
 import com.tfggestioncalorias.tfggestioncalorias.entity.UserApp;
 import com.tfggestioncalorias.tfggestioncalorias.mapper.UserMapper;
 import com.tfggestioncalorias.tfggestioncalorias.repository.UserAppRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,70 +21,53 @@ public class UserService {
 
     private final UserAppRepository userAppRepository;
     private final UserMapper userMapper;
+    private final JwtUtil jwtUtil;
 
     //SERVICIOS DE USUARIO:
 
-    //Obtener todos los usuarios
-    public List<UserInfoDto> getAllUsers(){
-        return userAppRepository.findAll().stream()
-                .map(userMapper::toDto)
-                .collect(Collectors.toList());
-    }
-
 
     //Obtenemos un usuario
-    public UserInfoDto getUserByEmail(String email){
-        Optional<UserApp> user = userAppRepository.findByEmailContaining(email);
-        return user.map(userMapper::toDto).orElse(null);
-    }
+    public ResponseEntity<UserInfoDto> getUser(String authHeader){
 
-    //Creación de usuario
-    public String registerUser(UserRegisterDto userdto){
-        if(userAppRepository.findByEmailContaining(userdto.getEmail()).isPresent()){
-            return "Este usuario ya existe";
-        }else {
-            userAppRepository.save(userMapper.toEntity(userdto));
-            return "Usuario registrado correctamente";
-        }
+        String token = authHeader.replace("Bearer", "").trim();
+        String email = jwtUtil.extractEmail(token);
+        UserApp user = userAppRepository.findByEmail(email);
+
+        UserInfoDto dto = userMapper.toDto(user);
+
+        return ResponseEntity.ok(dto);
+
     }
 
 
     //Actualizar la información
-    public String updateUser(UserInfoDto userdto){
-        Optional<UserApp> user = userAppRepository.findById(userdto.getId());
+    //todo --> Hacer este metodo correctamente, actualizando el usuario del email proporcionado por el dto
+    public String updateUser(String authHeader, UserInfoDto userdto){
 
-        if(user.isEmpty()){
-            return null;
-        }else if(userAppRepository.findByEmailContaining(userdto.getEmail()).isPresent()){
-            return "Este correo ya esta asignado a otro usuario";
-        }else{
-            user.get().setName(userdto.getName());
-            user.get().setEmail(userdto.getEmail());
-            user.get().setAge(userdto.getAge());
-            user.get().setHeight(userdto.getHeight());
-            user.get().setWeight(userdto.getWeight());
-            user.get().setGenre(userdto.getGenre());
-            user.get().setGoal(userdto.getGoal());
-            user.get().setPhisical_activity(userdto.getPhisicalActivity());
-            userAppRepository.save(user.get());
-            return "Usuario actualizado correctamente";
-        }
-    }
+        String token = authHeader.replace("Bearer ", "");
+        String email = jwtUtil.extractEmail(token);
 
-    //Login del usuario
-    public String loginUser(String email, String password){
-        Optional<UserApp> useropt = userAppRepository.findByEmailContaining(email);
+        UserApp user = userAppRepository.findByEmail(email);
 
-        if(useropt.isPresent()){
-            UserApp userApp = useropt.get();
-            if(userMapper.passwordEncoder.matches(password, userApp.getPassword())){
-                return "Login exitoso";
-            }else{
-                return "Contraseña incorrecta";
-            }
-        }else {
+        if (user == null) {
             return "Usuario no encontrado";
         }
+
+
+        UserApp existingUserWithEmail = userAppRepository.findByEmail(userdto.getEmail());
+
+            user.setName(userdto.getName());
+            user.setEmail(userdto.getEmail());
+            user.setAge(userdto.getAge());
+            user.setHeight(userdto.getHeight());
+            user.setWeight(userdto.getWeight());
+            user.setGenre(userdto.getGenre());
+            user.setGoal(userdto.getGoal());
+            user.setPhisical_activity(userdto.getPhisicalActivity());
+            userAppRepository.save(user);
+            return "Usuario actualizado correctamente";
+
+
     }
 
 }

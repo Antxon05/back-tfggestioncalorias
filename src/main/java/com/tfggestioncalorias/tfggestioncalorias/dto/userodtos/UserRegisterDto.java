@@ -1,4 +1,4 @@
-package com.tfggestioncalorias.tfggestioncalorias.dto;
+package com.tfggestioncalorias.tfggestioncalorias.dto.userodtos;
 
 import com.tfggestioncalorias.tfggestioncalorias.entity.Genre;
 import com.tfggestioncalorias.tfggestioncalorias.entity.Goal;
@@ -39,9 +39,6 @@ public class UserRegisterDto {
 
     @NotNull
     BigDecimal weight;
-
-    @NotNull
-    LocalDate registrationDate;
 
     @NotNull
     Genre genre;

@@ -1,4 +1,4 @@
-package com.tfggestioncalorias.tfggestioncalorias.dto;
+package com.tfggestioncalorias.tfggestioncalorias.dto.userodtos;
 
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Builder;

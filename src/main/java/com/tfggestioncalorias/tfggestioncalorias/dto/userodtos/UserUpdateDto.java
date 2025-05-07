@@ -1,4 +1,4 @@
-package com.tfggestioncalorias.tfggestioncalorias.dto;
+package com.tfggestioncalorias.tfggestioncalorias.dto.userodtos;
 
 import com.tfggestioncalorias.tfggestioncalorias.entity.Genre;
 import com.tfggestioncalorias.tfggestioncalorias.entity.Goal;
@@ -6,16 +6,15 @@ import com.tfggestioncalorias.tfggestioncalorias.entity.PhisicalActivity;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
-import lombok.Value;
+import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-@Value
+@Data
 @Builder(toBuilder = true)
-public class UserInfoDto {
-
+public class UserUpdateDto {
 
     Integer id;
 
@@ -37,9 +36,6 @@ public class UserInfoDto {
     BigDecimal weight;
 
     @NotNull
-    LocalDate registrationDate;
-
-    @NotNull
     Genre genre;
 
     @NotNull
@@ -47,8 +43,5 @@ public class UserInfoDto {
 
     @NotNull
     PhisicalActivity phisicalActivity;
-
-
-
 
 }

@@ -1,14 +1,14 @@
 package com.tfggestioncalorias.tfggestioncalorias.mapper;
 
 
-import com.tfggestioncalorias.tfggestioncalorias.dto.UserInfoDto;
-import com.tfggestioncalorias.tfggestioncalorias.dto.UserRegisterDto;
-import com.tfggestioncalorias.tfggestioncalorias.entity.Genre;
+import com.tfggestioncalorias.tfggestioncalorias.dto.userodtos.UserInfoDto;
+import com.tfggestioncalorias.tfggestioncalorias.dto.userodtos.UserRegisterDto;
 import com.tfggestioncalorias.tfggestioncalorias.entity.UserApp;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDate;
 
 @Component
 @RequiredArgsConstructor
@@ -26,7 +26,7 @@ public class UserMapper {
         userApp.setAge(userdto.getAge());
         userApp.setHeight(userdto.getHeight ());
         userApp.setWeight(userdto.getWeight());
-        userApp.setRegistrationDate(userdto.getRegistrationDate());
+        userApp.setRegistrationDate(LocalDate.now());
         userApp.setGenre(userdto.getGenre());
         userApp.setGoal(userdto.getGoal());
         userApp.setPhisical_activity(userdto.getPhisicalActivity());
