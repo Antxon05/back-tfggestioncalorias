@@ -23,8 +23,6 @@ public class UserInfoDto {
     @Length(max = 100)
     String name;
 
-    @NotEmpty
-    @Length(max = 100)
     String email;
 
     @NotNull

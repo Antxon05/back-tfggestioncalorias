@@ -41,7 +41,6 @@ public class UserService {
 
 
     //Actualizar la información
-    //todo --> Hacer este metodo correctamente, actualizando el usuario del email proporcionado por el dto
     public String updateUser(String authHeader, UserInfoDto userdto){
 
         String token = authHeader.replace("Bearer ", "");
@@ -53,11 +52,7 @@ public class UserService {
             return "Usuario no encontrado";
         }
 
-
-        UserApp existingUserWithEmail = userAppRepository.findByEmail(userdto.getEmail());
-
             user.setName(userdto.getName());
-            user.setEmail(userdto.getEmail());
             user.setAge(userdto.getAge());
             user.setHeight(userdto.getHeight());
             user.setWeight(userdto.getWeight());

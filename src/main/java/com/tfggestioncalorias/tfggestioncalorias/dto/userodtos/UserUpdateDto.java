@@ -22,10 +22,6 @@ public class UserUpdateDto {
     @Length(max = 100)
     String name;
 
-    @NotEmpty
-    @Length(max = 100)
-    String email;
-
     @NotNull
     Integer age;
 
