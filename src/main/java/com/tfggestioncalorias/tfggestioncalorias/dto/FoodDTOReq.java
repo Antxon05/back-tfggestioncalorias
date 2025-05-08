@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 
 @Value
 @Builder(toBuilder = true)
-public class FoodDto {
+public class FoodDTOReq {
 
     Integer id;
 
@@ -33,10 +33,6 @@ public class FoodDto {
 
     Boolean isPersonalized;
 
-    UserApp createdbyUserid;
-
-
-
-
+    Integer createdbyUserid;
 
 }

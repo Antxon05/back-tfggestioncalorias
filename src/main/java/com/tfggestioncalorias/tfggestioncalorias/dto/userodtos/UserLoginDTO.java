@@ -7,7 +7,7 @@ import org.hibernate.validator.constraints.Length;
 
 @Value
 @Builder(toBuilder = true)
-public class UserLoginDto {
+public class UserLoginDTO {
 
 
     Integer id;

@@ -6,21 +6,29 @@ import com.tfggestioncalorias.tfggestioncalorias.entity.PhisicalActivity;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Value;
 import org.hibernate.validator.constraints.Length;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 
-@Data
+@Value
 @Builder(toBuilder = true)
-public class UserUpdateDto {
+public class UserRegisterDTO {
 
     Integer id;
+
 
     @NotEmpty
     @Length(max = 100)
     String name;
+
+    @NotEmpty
+    @Length(max = 100)
+    String email;
+
+    @NotEmpty
+    @Length(min = 8)
+    String password;
 
     @NotNull
     Integer age;

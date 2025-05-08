@@ -1,8 +1,8 @@
 package com.tfggestioncalorias.tfggestioncalorias.mapper;
 
 
-import com.tfggestioncalorias.tfggestioncalorias.dto.userodtos.UserInfoDto;
-import com.tfggestioncalorias.tfggestioncalorias.dto.userodtos.UserRegisterDto;
+import com.tfggestioncalorias.tfggestioncalorias.dto.userodtos.UserInfoDTO;
+import com.tfggestioncalorias.tfggestioncalorias.dto.userodtos.UserRegisterDTO;
 import com.tfggestioncalorias.tfggestioncalorias.entity.UserApp;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,7 +18,7 @@ public class UserMapper {
     public final PasswordEncoder passwordEncoder;
 
     //Para registrar un usuario, el password se codifica con BCrypt
-    public UserApp toEntity(UserRegisterDto userdto){
+    public UserApp toEntity(UserRegisterDTO userdto){
         UserApp userApp = new UserApp();
         userApp.setName(userdto.getName());
         userApp.setEmail(userdto.getEmail());
@@ -34,8 +34,8 @@ public class UserMapper {
     }
 
     //Para mostrar la información
-    public UserInfoDto toDto(UserApp userApp){
-        return UserInfoDto.builder()
+    public UserInfoDTO toDto(UserApp userApp){
+        return UserInfoDTO.builder()
                 .id(userApp.getId())
                 .name(userApp.getName())
                 .email(userApp.getEmail())

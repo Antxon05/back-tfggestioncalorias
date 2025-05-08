@@ -2,16 +2,14 @@ package com.tfggestioncalorias.tfggestioncalorias.service;
 
 import com.tfggestioncalorias.tfggestioncalorias.config.JwtUtil;
 import com.tfggestioncalorias.tfggestioncalorias.dto.userodtos.AuthResponseDTO;
-import com.tfggestioncalorias.tfggestioncalorias.dto.userodtos.UserLoginDto;
-import com.tfggestioncalorias.tfggestioncalorias.dto.userodtos.UserRegisterDto;
+import com.tfggestioncalorias.tfggestioncalorias.dto.userodtos.UserLoginDTO;
+import com.tfggestioncalorias.tfggestioncalorias.dto.userodtos.UserRegisterDTO;
 import com.tfggestioncalorias.tfggestioncalorias.entity.UserApp;
 import com.tfggestioncalorias.tfggestioncalorias.mapper.UserMapper;
 import com.tfggestioncalorias.tfggestioncalorias.repository.UserAppRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
 
 @Service
 @AllArgsConstructor
@@ -22,7 +20,7 @@ public class AuthService {
     private final JwtUtil jwtUtil;
     private final UserMapper userMapper;
 
-    public void register(UserRegisterDto dto){
+    public void register(UserRegisterDTO dto){
 
         if(userAppRepository.findByEmailContaining(dto.getEmail()).isPresent()){
             throw new RuntimeException("El correo ya existe");
@@ -33,7 +31,7 @@ public class AuthService {
         userAppRepository.save(user);
     }
 
-    public AuthResponseDTO login(UserLoginDto dto){
+    public AuthResponseDTO login(UserLoginDTO dto){
         UserApp user = userAppRepository.findByEmailContaining(dto.getEmail())
                 .orElseThrow(()-> new RuntimeException("Usuario no encontrado"));
 

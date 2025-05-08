@@ -10,12 +10,11 @@ import java.time.LocalDate;
 
 @Value
 @Builder(toBuilder = true)
-public class DailySummaryDto {
-
+public class DailySummaryDTOReq {
     Integer id;
 
     @NotNull
-    UserApp user;
+    Integer user;
 
     @NotNull
     LocalDate date;
@@ -43,6 +42,4 @@ public class DailySummaryDto {
 
     @NotNull
     BigDecimal goalFats;
-
-
 }

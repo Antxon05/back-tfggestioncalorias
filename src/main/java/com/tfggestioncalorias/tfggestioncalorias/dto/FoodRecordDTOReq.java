@@ -10,13 +10,13 @@ import java.time.LocalDate;
 
 @Value
 @Builder(toBuilder = true)
-public class FoodRecordDto {
+public class FoodRecordDTOReq {
 
     Integer id;
 
-    UserApp user;
+    Integer userId;
 
-    Food food;
+    Integer foodId;
 
     LocalDate date;
 

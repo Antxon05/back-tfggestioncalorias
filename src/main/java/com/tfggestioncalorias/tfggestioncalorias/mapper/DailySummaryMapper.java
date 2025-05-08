@@ -1,6 +1,6 @@
 package com.tfggestioncalorias.tfggestioncalorias.mapper;
 
-import com.tfggestioncalorias.tfggestioncalorias.dto.DailySummaryDto;
+import com.tfggestioncalorias.tfggestioncalorias.dto.DailySummaryDTO;
 import com.tfggestioncalorias.tfggestioncalorias.entity.DailySummary;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component;
 public class DailySummaryMapper {
 
 
-    public DailySummaryDto toDto (DailySummaryDto dailySummaryDto){
-        return DailySummaryDto.builder()
+    public DailySummaryDTO toDto (DailySummaryDTO dailySummaryDto){
+        return DailySummaryDTO.builder()
                 .id(dailySummaryDto.getId())
                 .user(dailySummaryDto.getUser())
                 .date(dailySummaryDto.getDate())
@@ -26,7 +26,7 @@ public class DailySummaryMapper {
                 .build();
     }
 
-    public DailySummary toEntity (DailySummaryDto dailySummaryDto){
+    public DailySummary toEntity (DailySummaryDTO dailySummaryDto){
         DailySummary dailySummary = new DailySummary();
         dailySummary.setUser(dailySummaryDto.getUser());
         dailySummary.setDate(dailySummaryDto.getDate());

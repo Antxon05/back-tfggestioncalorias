@@ -1,19 +1,13 @@
 package com.tfggestioncalorias.tfggestioncalorias.service;
 
 import com.tfggestioncalorias.tfggestioncalorias.config.JwtUtil;
-import com.tfggestioncalorias.tfggestioncalorias.dto.userodtos.UserInfoDto;
-import com.tfggestioncalorias.tfggestioncalorias.dto.userodtos.UserRegisterDto;
-import com.tfggestioncalorias.tfggestioncalorias.dto.userodtos.UserUpdateDto;
+import com.tfggestioncalorias.tfggestioncalorias.dto.userodtos.UserInfoDTO;
 import com.tfggestioncalorias.tfggestioncalorias.entity.UserApp;
 import com.tfggestioncalorias.tfggestioncalorias.mapper.UserMapper;
 import com.tfggestioncalorias.tfggestioncalorias.repository.UserAppRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -27,13 +21,13 @@ public class UserService {
 
 
     //Obtenemos un usuario
-    public ResponseEntity<UserInfoDto> getUser(String authHeader){
+    public ResponseEntity<UserInfoDTO> getUser(String authHeader){
 
         String token = authHeader.replace("Bearer", "").trim();
         String email = jwtUtil.extractEmail(token);
         UserApp user = userAppRepository.findByEmail(email);
 
-        UserInfoDto dto = userMapper.toDto(user);
+        UserInfoDTO dto = userMapper.toDto(user);
 
         return ResponseEntity.ok(dto);
 
@@ -41,7 +35,7 @@ public class UserService {
 
 
     //Actualizar la información
-    public String updateUser(String authHeader, UserInfoDto userdto){
+    public String updateUser(String authHeader, UserInfoDTO userdto){
 
         String token = authHeader.replace("Bearer ", "");
         String email = jwtUtil.extractEmail(token);

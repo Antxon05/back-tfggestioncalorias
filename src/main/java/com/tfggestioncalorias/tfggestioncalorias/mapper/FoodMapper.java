@@ -1,6 +1,6 @@
 package com.tfggestioncalorias.tfggestioncalorias.mapper;
 
-import com.tfggestioncalorias.tfggestioncalorias.dto.FoodDto;
+import com.tfggestioncalorias.tfggestioncalorias.dto.FoodDTO;
 import com.tfggestioncalorias.tfggestioncalorias.entity.Food;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -11,8 +11,8 @@ public class FoodMapper {
 
 
     //Para los GETTERS, sirve para mostrar la información
-    public FoodDto toDto(Food food){
-        return FoodDto.builder()
+    public FoodDTO toDto(Food food){
+        return FoodDTO.builder()
                 .id(food.getId())
                 .name(food.getName())
                 .calories(food.getCalories())
@@ -25,7 +25,7 @@ public class FoodMapper {
     }
 
     //Para los POST y PUT, convierte a entidad para registrar a la base de datos
-    public Food toEntity(FoodDto fooddto){
+    public Food toEntity(FoodDTO fooddto){
         Food food = new Food();
         food.setName(fooddto.getName());
         food.setCalories(fooddto.getCalories());
