@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 @Table(name = "food")
 public class Food {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 
@@ -35,6 +36,6 @@ public class Food {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "createdby_userid")
-    private UserApp createdbyUserid;
+    private UserApp createdByUser;
 
 }

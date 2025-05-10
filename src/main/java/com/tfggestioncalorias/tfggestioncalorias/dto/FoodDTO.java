@@ -36,7 +36,4 @@ public class FoodDTO {
     UserApp createdByUser;
 
 
-
-
-
 }

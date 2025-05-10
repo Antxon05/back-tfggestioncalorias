@@ -1,7 +1,10 @@
 package com.tfggestioncalorias.tfggestioncalorias.mapper;
 
 import com.tfggestioncalorias.tfggestioncalorias.dto.DailySummaryDTO;
+import com.tfggestioncalorias.tfggestioncalorias.dto.DailySummaryDTOReq;
 import com.tfggestioncalorias.tfggestioncalorias.entity.DailySummary;
+import com.tfggestioncalorias.tfggestioncalorias.entity.UserApp;
+import com.tfggestioncalorias.tfggestioncalorias.repository.UserAppRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -9,6 +12,8 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 public class DailySummaryMapper {
 
+
+    private final UserAppRepository userAppRepository;
 
     public DailySummaryDTO toDto (DailySummaryDTO dailySummaryDto){
         return DailySummaryDTO.builder()
@@ -26,9 +31,13 @@ public class DailySummaryMapper {
                 .build();
     }
 
-    public DailySummary toEntity (DailySummaryDTO dailySummaryDto){
+    public DailySummary toEntity (DailySummaryDTOReq dailySummaryDto){
         DailySummary dailySummary = new DailySummary();
-        dailySummary.setUser(dailySummaryDto.getUser());
+
+        UserApp userApp = userAppRepository.findById(dailySummaryDto.getUser())
+                .orElseThrow(()-> new RuntimeException("Usuario no encontrado"));
+        dailySummary.setUser(userApp);
+
         dailySummary.setDate(dailySummaryDto.getDate());
         dailySummary.setConsumedCalories(dailySummaryDto.getConsumedCalories());
         dailySummary.setGoalCalories(dailySummaryDto.getGoalCalories());

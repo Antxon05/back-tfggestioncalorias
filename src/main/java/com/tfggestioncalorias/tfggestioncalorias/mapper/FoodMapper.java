@@ -1,7 +1,10 @@
 package com.tfggestioncalorias.tfggestioncalorias.mapper;
 
 import com.tfggestioncalorias.tfggestioncalorias.dto.FoodDTO;
+import com.tfggestioncalorias.tfggestioncalorias.dto.FoodDTOReq;
 import com.tfggestioncalorias.tfggestioncalorias.entity.Food;
+import com.tfggestioncalorias.tfggestioncalorias.entity.UserApp;
+import com.tfggestioncalorias.tfggestioncalorias.repository.UserAppRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -9,6 +12,9 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 public class FoodMapper {
 
+
+    private final UserMapper userMapper;
+    private final UserAppRepository userAppRepository;
 
     //Para los GETTERS, sirve para mostrar la información
     public FoodDTO toDto(Food food){
@@ -20,20 +26,25 @@ public class FoodMapper {
                 .fats(food.getFats())
                 .protein(food.getProtein())
                 .isPersonalized(food.getIsPersonalized())
-                .createdbyUserid(food.getCreatedbyUserid())
+                .createdByUser(food.getCreatedByUser())
                 .build();
     }
 
     //Para los POST y PUT, convierte a entidad para registrar a la base de datos
-    public Food toEntity(FoodDTO fooddto){
+    public Food toEntity(FoodDTOReq fooddto, Integer userId){
         Food food = new Food();
         food.setName(fooddto.getName());
         food.setCalories(fooddto.getCalories());
         food.setCarbohydrates(fooddto.getCarbohydrates());
         food.setFats(fooddto.getFats());
         food.setProtein(fooddto.getProtein());
-        food.setIsPersonalized(fooddto.getIsPersonalized());
-        food.setCreatedbyUserid(fooddto.getCreatedbyUserid());
+
+        food.setIsPersonalized(true);
+
+        UserApp userApp = userAppRepository.findById(userId)
+                .orElseThrow(()-> new RuntimeException("Usuario no encontrado"));
+        food.setCreatedByUser(userApp);
+
         return food;
     }
 

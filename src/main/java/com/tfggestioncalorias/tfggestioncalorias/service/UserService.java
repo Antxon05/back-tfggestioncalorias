@@ -33,6 +33,18 @@ public class UserService {
 
     }
 
+    //Obtenemos el Id del usuario logueado
+    public Integer getAuthenticatedUserId(String authHeader){
+        String token = authHeader.replace("Bearer ", "");
+        String email = jwtUtil.extractEmail(token);
+        UserApp user = userAppRepository.findByEmail(email);
+        if(user == null){
+            throw new RuntimeException("Usuario no encontrado");
+        }else{
+            return user.getId();
+        }
+    }
+
 
     //Actualizar la información
     public String updateUser(String authHeader, UserInfoDTO userdto){

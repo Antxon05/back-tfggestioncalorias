@@ -2,6 +2,7 @@ package com.tfggestioncalorias.tfggestioncalorias.dto;
 
 import com.tfggestioncalorias.tfggestioncalorias.entity.Food;
 import com.tfggestioncalorias.tfggestioncalorias.entity.UserApp;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Value;
 
@@ -14,12 +15,15 @@ public class FoodRecordDTOReq {
 
     Integer id;
 
+    @NotNull
     Integer userId;
 
+    @NotNull
     Integer foodId;
 
     LocalDate date;
 
+    @NotNull
     BigDecimal weightgm;
 
 
