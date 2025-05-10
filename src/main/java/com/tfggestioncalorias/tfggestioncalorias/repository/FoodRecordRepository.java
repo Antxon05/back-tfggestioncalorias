@@ -4,5 +4,13 @@ import com.tfggestioncalorias.tfggestioncalorias.entity.FoodRecord;
 import com.tfggestioncalorias.tfggestioncalorias.entity.UserApp;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.nio.channels.FileChannel;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+
 public interface FoodRecordRepository extends JpaRepository<FoodRecord, Integer> {
+    List<FoodRecord> findByUserId(Integer userId);
+
+    Optional<FoodRecord> findByIdAndUserId(Integer id, Integer userId);
 }
