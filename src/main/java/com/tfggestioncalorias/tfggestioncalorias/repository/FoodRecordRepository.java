@@ -1,5 +1,6 @@
 package com.tfggestioncalorias.tfggestioncalorias.repository;
 
+import com.tfggestioncalorias.tfggestioncalorias.entity.DayMoment;
 import com.tfggestioncalorias.tfggestioncalorias.entity.FoodRecord;
 import com.tfggestioncalorias.tfggestioncalorias.entity.UserApp;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,4 +14,8 @@ public interface FoodRecordRepository extends JpaRepository<FoodRecord, Integer>
     List<FoodRecord> findByUserId(Integer userId);
 
     Optional<FoodRecord> findByIdAndUserId(Integer id, Integer userId);
+
+    List<FoodRecord> findByUserIdAndDayMoment(Integer userId, DayMoment dayMoment);
+
+    Integer user(UserApp user);
 }

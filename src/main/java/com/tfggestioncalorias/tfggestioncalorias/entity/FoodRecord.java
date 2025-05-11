@@ -13,6 +13,7 @@ import java.time.LocalDate;
 @Table(name = "food_record")
 public class FoodRecord {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 
@@ -30,4 +31,7 @@ public class FoodRecord {
     @Column(name = "weight_gm", nullable = false)
     private BigDecimal weightGm;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "day_moment")
+    private DayMoment dayMoment;
 }

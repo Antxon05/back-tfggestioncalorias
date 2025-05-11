@@ -23,18 +23,20 @@ public class FoodRecordMapper {
     public FoodRecordDTO toDto(FoodRecord foodRecord){
         return FoodRecordDTO.builder()
                 .id(foodRecord.getId())
-                .user(foodRecord.getUser())
-                .food(foodRecord.getFood())
+                .user(foodRecord.getUser().getId())
+                .food(foodRecord.getFood().getId())
+                .foodName(foodRecord.getFood().getName())
                 .date(foodRecord.getDate())
                 .weightgm(foodRecord.getWeightGm())
+                .dayMoment(foodRecord.getDayMoment())
                 .build();
     }
 
     //Para los POST y PUT, convierte a entidad para registrar a la base de datos
-    public FoodRecord toEntity(FoodRecordDTOReq foodRecordDto){
+    public FoodRecord toEntity(FoodRecordDTOReq foodRecordDto, Integer userId){
         FoodRecord foodRecord = new FoodRecord();
 
-        UserApp userApp = userAppRepository.findById(foodRecordDto.getUserId())
+        UserApp userApp = userAppRepository.findById(userId)
                 .orElseThrow(()-> new RuntimeException("Usuario no encontrado"));
         foodRecord.setUser(userApp);
 
@@ -44,6 +46,7 @@ public class FoodRecordMapper {
         foodRecord.setFood(food);
         foodRecord.setDate(LocalDate.now());
         foodRecord.setWeightGm(foodRecordDto.getWeightgm());
+        foodRecord.setDayMoment(foodRecordDto.getDayMoment());
         return foodRecord;
     }
 

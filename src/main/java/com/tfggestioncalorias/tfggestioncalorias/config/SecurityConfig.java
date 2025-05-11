@@ -42,6 +42,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/food/**").authenticated()
                         .requestMatchers("/api/user/**").authenticated()
+                        .requestMatchers("/api/foodrecord/**").authenticated()
+                        .requestMatchers("/api/dailysummary/**").authenticated()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session

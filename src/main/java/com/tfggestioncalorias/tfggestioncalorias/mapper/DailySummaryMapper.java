@@ -15,7 +15,7 @@ public class DailySummaryMapper {
 
     private final UserAppRepository userAppRepository;
 
-    public DailySummaryDTO toDto (DailySummaryDTO dailySummaryDto){
+    public DailySummaryDTO toDto (DailySummary dailySummaryDto){
         return DailySummaryDTO.builder()
                 .id(dailySummaryDto.getId())
                 .user(dailySummaryDto.getUser())
