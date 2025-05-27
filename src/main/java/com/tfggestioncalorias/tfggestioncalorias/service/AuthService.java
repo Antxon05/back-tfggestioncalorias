@@ -20,8 +20,7 @@ public class AuthService {
     private final JwtUtil jwtUtil;
     private final UserMapper userMapper;
 
-    public void register(UserRegisterDTO dto){
-
+    public AuthResponseDTO register(UserRegisterDTO dto){
         if(userAppRepository.findByEmailContaining(dto.getEmail()).isPresent()){
             throw new RuntimeException("El correo ya existe");
         }
@@ -29,6 +28,9 @@ public class AuthService {
         UserApp user = userMapper.toEntity(dto);
 
         userAppRepository.save(user);
+
+        String token = jwtUtil.generateToken(user.getEmail());
+        return new AuthResponseDTO(token, user.getEmail());
     }
 
     public AuthResponseDTO login(UserLoginDTO dto){

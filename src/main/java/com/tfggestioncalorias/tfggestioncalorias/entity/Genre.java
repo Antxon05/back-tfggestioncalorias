@@ -7,5 +7,4 @@ import jakarta.persistence.Enumerated;
 public enum Genre {
     HOMBRE,
     MUJER;
-
 }

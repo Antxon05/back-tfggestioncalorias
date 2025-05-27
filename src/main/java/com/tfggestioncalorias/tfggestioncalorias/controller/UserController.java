@@ -22,6 +22,13 @@ public class UserController {
     }
 
 
+    //Obtenemos las calorías que le corresponden al usuario
+    @GetMapping("/targetCalories")
+    public Integer getTargetCalories(@RequestHeader("Authorization") String authHeader){
+        return userService.getTargetCalories(authHeader);
+    }
+
+
     //Actualizamos el usuario
     @PostMapping("/update")
     public String updateUser(@RequestHeader("Authorization") String authHeader, @Valid @RequestBody UserInfoDTO userdto){
