@@ -137,5 +137,28 @@ public class DailySummaryService {
         dailySummaryRepository.save(summary);
     }
 
+    public void updateExistsDailySummary(String authHeader){
+        Integer userId = userService.getAuthenticatedUserId(authHeader);
+        UserApp user = userAppRepository.findById(userId).orElse(null);
+
+        Optional<DailySummary> optionalSummary = dailySummaryRepository.findByUserIdAndDate(userId, LocalDate.now());
+
+        if (optionalSummary.isPresent()) {
+            DailySummary summary = optionalSummary.get();
+
+            int newCalorieGoal = goalService.calculateGoalCalories(user);
+            BigDecimal newProteinGoal = goalService.calculateGoalProtein(newCalorieGoal);
+            BigDecimal newFatGoal = goalService.calculateGoalFats(newCalorieGoal);
+            BigDecimal newCarbGoal = goalService.calculateGoalCarbohydrates(newCalorieGoal);
+
+            summary.setGoalCalories(newCalorieGoal);
+            summary.setGoalProtein(newProteinGoal);
+            summary.setGoalFats(newFatGoal);
+            summary.setGoalCarbohydrates(newCarbGoal);
+
+            dailySummaryRepository.save(summary);
+        }
+    }
+
 
 }

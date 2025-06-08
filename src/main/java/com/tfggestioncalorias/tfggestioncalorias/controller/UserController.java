@@ -3,6 +3,7 @@ package com.tfggestioncalorias.tfggestioncalorias.controller;
 
 import com.tfggestioncalorias.tfggestioncalorias.dto.userodtos.UserInfoDTO;
 import com.tfggestioncalorias.tfggestioncalorias.service.UserService;
+import com.tfggestioncalorias.tfggestioncalorias.service.UserUpdaterService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
+    private final UserUpdaterService userUpdaterService;
 
     //Obtenemos todos los usuarios creados
     @GetMapping()
@@ -32,7 +34,7 @@ public class UserController {
     //Actualizamos el usuario
     @PostMapping("/update")
     public String updateUser(@RequestHeader("Authorization") String authHeader, @Valid @RequestBody UserInfoDTO userdto){
-        return userService.updateUser(authHeader, userdto);
+        return userUpdaterService.updateUser(authHeader, userdto);
     }
 
 }

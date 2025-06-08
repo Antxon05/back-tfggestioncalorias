@@ -93,7 +93,6 @@ public class UserService {
 
     //Actualizar la información
     public String updateUser(String authHeader, UserInfoDTO userdto){
-
         String token = authHeader.replace("Bearer ", "");
         String email = jwtUtil.extractEmail(token);
 
@@ -111,6 +110,7 @@ public class UserService {
             user.setGoal(userdto.getGoal());
             user.setPhisical_activity(userdto.getPhisicalActivity());
             userAppRepository.save(user);
+
             return "Usuario actualizado correctamente";
 
 
