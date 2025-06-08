@@ -25,7 +25,7 @@ public class FoodService {
     //Si se pasa un name busca por name y si no busca todos
     public List<FoodDTO> getFoods(String name){
         if(name != null){
-            return foodRepository.getFoodByName(name)
+            return foodRepository.findByNameContainingIgnoreCase(name)
                     .stream()
                     .map(foodMapper::toDto)
                     .toList();

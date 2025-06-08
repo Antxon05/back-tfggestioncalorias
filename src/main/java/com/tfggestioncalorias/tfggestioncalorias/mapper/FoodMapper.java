@@ -18,6 +18,11 @@ public class FoodMapper {
 
     //Para los GETTERS, sirve para mostrar la información
     public FoodDTO toDto(Food food){
+        Integer createdByUserId = null;
+        if (food.getCreatedByUser() != null) {
+            createdByUserId = food.getCreatedByUser().getId();
+        }
+
         return FoodDTO.builder()
                 .id(food.getId())
                 .name(food.getName())
@@ -26,7 +31,7 @@ public class FoodMapper {
                 .fats(food.getFats())
                 .protein(food.getProtein())
                 .isPersonalized(food.getIsPersonalized())
-                .createdByUser(food.getCreatedByUser())
+                .createdByUser(createdByUserId)
                 .build();
     }
 

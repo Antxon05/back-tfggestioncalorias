@@ -33,7 +33,7 @@ public class FoodDTO {
 
     Boolean isPersonalized;
 
-    UserApp createdByUser;
+    Integer createdByUser;
 
 
 }

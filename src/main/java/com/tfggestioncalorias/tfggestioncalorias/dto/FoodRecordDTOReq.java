@@ -21,8 +21,6 @@ public class FoodRecordDTOReq {
     @NotNull
     Integer foodId;
 
-    LocalDate date;
-
     @NotNull
     BigDecimal weightgm;
 

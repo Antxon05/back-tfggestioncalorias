@@ -24,6 +24,8 @@ public class FoodRecordDTO {
 
     String foodName;
 
+    Integer calories;
+
     @NotNull
     LocalDate date;
 

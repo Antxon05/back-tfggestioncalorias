@@ -24,8 +24,10 @@ public class DailySummaryService {
     private final GoalService goalService;
     private final UserService userService;
     private final DailySummaryMapper dailySummaryMapper;
+    private final UserAppRepository userAppRepository;
 
 
+    //FuturasMejoras: Usarlo para implementar DatePicker
     public List<DailySummaryDTO> getDailySummaries(LocalDate date, String authHeader){
         Integer userId = userService.getAuthenticatedUserId(authHeader);
 
@@ -43,20 +45,25 @@ public class DailySummaryService {
 
     }
 
+    //Obtiene el daily del dia actual, si no esta crea uno nuevo
     public Optional<DailySummaryDTO> getDailySummaryByToday(String authHeader){
         Integer userId = userService.getAuthenticatedUserId(authHeader);
-        return dailySummaryRepository.findByUserIdAndDate(userId, LocalDate.now()).map(dailySummaryMapper::toDto);
+        LocalDate today = LocalDate.now();
+
+        Optional<DailySummary> existing = dailySummaryRepository.findByUserIdAndDate(userId, today);
+        if(existing.isPresent()){
+            return existing.map(dailySummaryMapper::toDto);
+        }
+
+        UserApp userApp = userAppRepository.findById(userId).orElse(null);
+        DailySummary dailySummary = dailySummaryMapper.toEntity(userApp);
+        dailySummaryRepository.save(dailySummary);
+
+        return Optional.of(dailySummaryMapper.toDto(dailySummary));
     }
 
-    /*
-    public Optional<DailySummaryDTO> getDailySummaryById(Integer id, String authHeader){
-        Integer userId = userService.getAuthenticatedUserId(authHeader);
-        return dailySummaryRepository.findByUserIdAndId(userId, id).map(dailySummaryMapper::toDto);
-    }
-    */
 
-
-    // Crea o actualiza el daily summary basado en el foodRecord que se pasa
+    // Actualiza el daily summary basado en el foodRecord que se pasa
     public void updateDailySummary(FoodRecord foodRecord){
         LocalDate today = foodRecord.getDate();
         Integer userId = foodRecord.getUser().getId();
@@ -104,6 +111,7 @@ public class DailySummaryService {
         dailySummaryRepository.save(dailySummary);
     }
 
+    //Resta valores al dailySummary
     public void subtractDailySummary(FoodRecord foodRecord) {
         LocalDate date = foodRecord.getDate();
         Integer userId = foodRecord.getUser().getId();

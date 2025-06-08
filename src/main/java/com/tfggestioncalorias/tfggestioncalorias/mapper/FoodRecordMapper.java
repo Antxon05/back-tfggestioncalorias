@@ -10,6 +10,8 @@ import com.tfggestioncalorias.tfggestioncalorias.repository.UserAppRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 
 @Component
@@ -21,11 +23,18 @@ public class FoodRecordMapper {
 
     //Para los GETTERS, sirve para mostrar la información
     public FoodRecordDTO toDto(FoodRecord foodRecord){
+        BigDecimal caloriesPer100g = BigDecimal.valueOf(foodRecord.getFood().getCalories());
+        Integer realCalories = caloriesPer100g
+                .multiply(foodRecord.getWeightGm())
+                .divide(BigDecimal.valueOf(100), 0, RoundingMode.HALF_UP)
+                .intValue();
+
         return FoodRecordDTO.builder()
                 .id(foodRecord.getId())
                 .user(foodRecord.getUser().getId())
                 .food(foodRecord.getFood().getId())
                 .foodName(foodRecord.getFood().getName())
+                .calories(realCalories)
                 .date(foodRecord.getDate())
                 .weightgm(foodRecord.getWeightGm())
                 .dayMoment(foodRecord.getDayMoment())

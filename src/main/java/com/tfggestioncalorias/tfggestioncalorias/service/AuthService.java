@@ -4,8 +4,11 @@ import com.tfggestioncalorias.tfggestioncalorias.config.JwtUtil;
 import com.tfggestioncalorias.tfggestioncalorias.dto.userodtos.AuthResponseDTO;
 import com.tfggestioncalorias.tfggestioncalorias.dto.userodtos.UserLoginDTO;
 import com.tfggestioncalorias.tfggestioncalorias.dto.userodtos.UserRegisterDTO;
+import com.tfggestioncalorias.tfggestioncalorias.entity.DailySummary;
 import com.tfggestioncalorias.tfggestioncalorias.entity.UserApp;
+import com.tfggestioncalorias.tfggestioncalorias.mapper.DailySummaryMapper;
 import com.tfggestioncalorias.tfggestioncalorias.mapper.UserMapper;
+import com.tfggestioncalorias.tfggestioncalorias.repository.DailySummaryRepository;
 import com.tfggestioncalorias.tfggestioncalorias.repository.UserAppRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,6 +22,8 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
     private final UserMapper userMapper;
+    private final DailySummaryMapper dailySummaryMapper;
+    private final DailySummaryRepository dailySummaryRepository;
 
     public AuthResponseDTO register(UserRegisterDTO dto){
         if(userAppRepository.findByEmailContaining(dto.getEmail()).isPresent()){
@@ -26,7 +31,6 @@ public class AuthService {
         }
 
         UserApp user = userMapper.toEntity(dto);
-
         userAppRepository.save(user);
 
         String token = jwtUtil.generateToken(user.getEmail());

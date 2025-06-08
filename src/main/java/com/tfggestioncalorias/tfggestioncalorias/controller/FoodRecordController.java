@@ -4,8 +4,10 @@ import com.tfggestioncalorias.tfggestioncalorias.dto.FoodRecordDTO;
 import com.tfggestioncalorias.tfggestioncalorias.dto.FoodRecordDTOReq;
 import com.tfggestioncalorias.tfggestioncalorias.service.FoodRecordService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,18 +19,17 @@ public class FoodRecordController {
     private final FoodRecordService foodRecordService;
 
     @GetMapping()
-    public List<FoodRecordDTO> getFoodRecords(@RequestParam(required = false) String dayMoment, @RequestHeader("Authorization") String authHeader){
-        return foodRecordService.getFoodRecords(dayMoment, authHeader);
+    public List<FoodRecordDTO> getFoodRecords(@RequestParam(required = false) String dayMoment, @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date, @RequestHeader("Authorization") String authHeader){
+        if(date == null){
+            date = LocalDate.now();
+        }
+
+        return foodRecordService.getFoodRecords(dayMoment, date, authHeader);
     }
 
     @GetMapping("/{id}")
     public Optional<FoodRecordDTO> getFoodRecordById(@PathVariable Integer id, @RequestHeader("Authorization") String authHeader){
         return foodRecordService.getFoodRecordById(id, authHeader);
-    }
-
-    @GetMapping("/calories/{id}")
-    public Integer getCaloriesByFoodRecord(@PathVariable Integer id, @RequestHeader("Authorization") String authHeader){
-        return foodRecordService.getCaloriesByFoodRecord(id, authHeader);
     }
 
     //También crea el dailySummary y lo actualiza

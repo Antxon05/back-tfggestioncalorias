@@ -16,17 +16,13 @@ public class DailySummaryController {
 
     private final DailySummaryService dailySummaryService;
 
-
-    //obtenemos solo los getters porque ya lo estamos creando mediante el foodRecord
     @GetMapping()
     public List<DailySummaryDTO> getDailySummary(@RequestParam(required = false) LocalDate date, @RequestHeader("Authorization") String authHeader){
         return dailySummaryService.getDailySummaries(date, authHeader);
     }
 
-
-
     @GetMapping("/today")
-    public Optional<DailySummaryDTO> getDailySummaryById(@RequestHeader("Authorization") String authHeader){
+    public Optional<DailySummaryDTO> getDailySummaryByToday(@RequestHeader("Authorization") String authHeader){
         return dailySummaryService.getDailySummaryByToday(authHeader);
     }
 

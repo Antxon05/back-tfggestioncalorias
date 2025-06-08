@@ -25,17 +25,27 @@ public class FoodRecordService {
     private final UserService userService;
     private final DailySummaryService dailySummaryService;
 
-    public List<FoodRecordDTO> getFoodRecords(String dayMoment, String authHeader){
+    public List<FoodRecordDTO> getFoodRecords(String dayMoment, LocalDate date, String authHeader) {
         Integer userId = userService.getAuthenticatedUserId(authHeader);
 
-        if(dayMoment != null){
+        if (dayMoment != null && date != null) {
             DayMoment dayMomentEnum = DayMoment.valueOf(dayMoment.toUpperCase());
-
+            return foodRecordRepository.findByUserIdAndDateAndDayMoment(userId, date, dayMomentEnum)
+                    .stream()
+                    .map(foodRecordMapper::toDto)
+                    .toList();
+        } else if (dayMoment != null) {
+            DayMoment dayMomentEnum = DayMoment.valueOf(dayMoment.toUpperCase());
             return foodRecordRepository.findByUserIdAndDayMoment(userId, dayMomentEnum)
                     .stream()
                     .map(foodRecordMapper::toDto)
                     .toList();
-        }else {
+        } else if (date != null) {
+            return foodRecordRepository.findByUserIdAndDate(userId, date)
+                    .stream()
+                    .map(foodRecordMapper::toDto)
+                    .toList();
+        } else {
             return foodRecordRepository.findByUserId(userId)
                     .stream()
                     .map(foodRecordMapper::toDto)
@@ -49,23 +59,7 @@ public class FoodRecordService {
         return foodRecordRepository.findByIdAndUserId(id, userId).map(foodRecordMapper::toDto);
     }
 
-    public Integer getCaloriesByFoodRecord(Integer id, String authHeader){
-        Integer userId = userService.getAuthenticatedUserId(authHeader);
-
-        FoodRecord foodRecord = foodRecordRepository.findByIdAndUserId(id, userId)
-                .orElseThrow(()-> new RuntimeException("Comida registrada no encontrada"));
-
-        Food food = foodRecord.getFood();
-        BigDecimal grams = foodRecord.getWeightGm();
-
-        BigDecimal caloriesConsumed = grams
-                .multiply(BigDecimal.valueOf(food.getCalories()))
-                .divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
-        return caloriesConsumed.intValue();
-    }
-
-
-    //CREAR O ACTUALIZAR FOOD RECORD
+    //ACTUALIZAR UN FOOD RECORD
     public FoodRecordDTO saveFoodRecord(FoodRecordDTOReq dto, String authHeader){
         Integer userId = userService.getAuthenticatedUserId(authHeader);
 
@@ -101,10 +95,5 @@ public class FoodRecordService {
         foodRecordRepository.delete(foodRecord);
         return Optional.of(foodRecordMapper.toDto(foodRecord));
     }
-
-
-    //
-
-
 
 }

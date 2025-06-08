@@ -5,15 +5,18 @@ import com.tfggestioncalorias.tfggestioncalorias.dto.DailySummaryDTOReq;
 import com.tfggestioncalorias.tfggestioncalorias.entity.DailySummary;
 import com.tfggestioncalorias.tfggestioncalorias.entity.UserApp;
 import com.tfggestioncalorias.tfggestioncalorias.repository.UserAppRepository;
+import com.tfggestioncalorias.tfggestioncalorias.service.GoalService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Component
 @AllArgsConstructor
 public class DailySummaryMapper {
 
-
-    private final UserAppRepository userAppRepository;
+    private final GoalService goalService;
 
     public DailySummaryDTO toDto (DailySummary dailySummaryDto){
         return DailySummaryDTO.builder()
@@ -31,22 +34,27 @@ public class DailySummaryMapper {
                 .build();
     }
 
-    public DailySummary toEntity (DailySummaryDTOReq dailySummaryDto){
+    public DailySummary toEntity (UserApp user){
         DailySummary dailySummary = new DailySummary();
 
-        UserApp userApp = userAppRepository.findById(dailySummaryDto.getUser())
-                .orElseThrow(()-> new RuntimeException("Usuario no encontrado"));
-        dailySummary.setUser(userApp);
+        dailySummary.setUser(user);
+        dailySummary.setDate(LocalDate.now());
 
-        dailySummary.setDate(dailySummaryDto.getDate());
-        dailySummary.setConsumedCalories(dailySummaryDto.getConsumedCalories());
-        dailySummary.setGoalCalories(dailySummaryDto.getGoalCalories());
-        dailySummary.setConsumedProtein(dailySummaryDto.getConsumedProtein());
-        dailySummary.setGoalProtein(dailySummaryDto.getGoalProtein());
-        dailySummary.setConsumedCarbohydrates(dailySummaryDto.getConsumedCarbohydrates());
-        dailySummary.setGoalCarbohydrates(dailySummaryDto.getGoalCarbohydrates());
-        dailySummary.setConsumedFats(dailySummaryDto.getConsumedFats());
-        dailySummary.setGoalFats(dailySummaryDto.getGoalFats());
+        Integer goalCalories = goalService.calculateGoalCalories(user);
+        BigDecimal goalProtein = goalService.calculateGoalProtein(goalCalories);
+        BigDecimal goalCarbs = goalService.calculateGoalCarbohydrates(goalCalories);
+        BigDecimal goalFats = goalService.calculateGoalFats(goalCalories);
+
+        dailySummary.setGoalCalories(goalCalories);
+        dailySummary.setGoalProtein(goalProtein);
+        dailySummary.setGoalCarbohydrates(goalCarbs);
+        dailySummary.setGoalFats(goalFats);
+
+        dailySummary.setConsumedCalories(0);
+        dailySummary.setConsumedProtein(BigDecimal.ZERO);
+        dailySummary.setConsumedCarbohydrates(BigDecimal.ZERO);
+        dailySummary.setConsumedFats(BigDecimal.ZERO);
+
         return dailySummary;
     }
 
