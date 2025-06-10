@@ -15,9 +15,9 @@ import java.time.LocalDate;
 @Component
 @AllArgsConstructor
 public class DailySummaryMapper {
-
     private final GoalService goalService;
 
+    //Para GETTERS, convierte una entidad a información que queremos mostrar
     public DailySummaryDTO toDto (DailySummary dailySummaryDto){
         return DailySummaryDTO.builder()
                 .id(dailySummaryDto.getId())
@@ -34,12 +34,13 @@ public class DailySummaryMapper {
                 .build();
     }
 
+    //Para POST, crea una entidad nueva del daily
     public DailySummary toEntity (UserApp user){
         DailySummary dailySummary = new DailySummary();
-
         dailySummary.setUser(user);
         dailySummary.setDate(LocalDate.now());
 
+        //Calcula con servicios todos los datos automáticamente, según información del usuario que se le pasa
         Integer goalCalories = goalService.calculateGoalCalories(user);
         BigDecimal goalProtein = goalService.calculateGoalProtein(goalCalories);
         BigDecimal goalCarbs = goalService.calculateGoalCarbohydrates(goalCalories);
@@ -50,6 +51,7 @@ public class DailySummaryMapper {
         dailySummary.setGoalCarbohydrates(goalCarbs);
         dailySummary.setGoalFats(goalFats);
 
+        //Se inicializa a 0 todos los datos
         dailySummary.setConsumedCalories(0);
         dailySummary.setConsumedProtein(BigDecimal.ZERO);
         dailySummary.setConsumedCarbohydrates(BigDecimal.ZERO);

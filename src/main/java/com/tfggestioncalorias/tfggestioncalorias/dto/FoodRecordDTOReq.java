@@ -12,6 +12,7 @@ import java.time.LocalDate;
 
 @Value
 @Builder(toBuilder = true)
+//Datos para registrar en el diario
 public class FoodRecordDTOReq {
 
     Integer id;

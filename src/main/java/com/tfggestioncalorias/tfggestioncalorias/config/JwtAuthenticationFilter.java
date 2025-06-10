@@ -20,6 +20,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         this.jwtUtil = jwtUtil;
     }
 
+
+    //Se encarga de comprobar que el token que se le pasa por el encabezado sea válido
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,

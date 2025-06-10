@@ -24,6 +24,8 @@ public class FoodRecordMapper {
     //Para los GETTERS, sirve para mostrar la información
     public FoodRecordDTO toDto(FoodRecord foodRecord){
         BigDecimal caloriesPer100g = BigDecimal.valueOf(foodRecord.getFood().getCalories());
+
+        //Cálculo de calorías según gramos insertados
         Integer realCalories = caloriesPer100g
                 .multiply(foodRecord.getWeightGm())
                 .divide(BigDecimal.valueOf(100), 0, RoundingMode.HALF_UP)
@@ -45,6 +47,7 @@ public class FoodRecordMapper {
     public FoodRecord toEntity(FoodRecordDTOReq foodRecordDto, Integer userId){
         FoodRecord foodRecord = new FoodRecord();
 
+        //Usa los repositorios de las entidades para buscar a la base de datos (mediante JPA)
         UserApp userApp = userAppRepository.findById(userId)
                 .orElseThrow(()-> new RuntimeException("Usuario no encontrado"));
         foodRecord.setUser(userApp);

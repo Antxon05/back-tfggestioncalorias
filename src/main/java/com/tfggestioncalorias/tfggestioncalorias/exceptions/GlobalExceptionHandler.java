@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+//Una serie de mensajes predefinidos
 @ControllerAdvice
 public class GlobalExceptionHandler {
 

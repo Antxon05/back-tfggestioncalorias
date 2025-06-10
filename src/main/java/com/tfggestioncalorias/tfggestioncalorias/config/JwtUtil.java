@@ -24,6 +24,7 @@ public class JwtUtil {
     private final UserAppRepository userAppRepository;
 
 
+    //Genera el token pasándole el email del usuario
     public String generateToken(String email){
 
         UserApp user = userAppRepository
@@ -39,6 +40,7 @@ public class JwtUtil {
                 .compact();
     }
 
+    //Devuelve el email si le pasamos el token
     public String extractEmail(String token){
         return Jwts.parser()
                 .setSigningKey(SECRET_KEY)
@@ -47,26 +49,31 @@ public class JwtUtil {
                 .getSubject();
     }
 
+    //Valida el token
     public boolean validateToken(String token) {
         return !isTokenExpired(token);
     }
 
+    //Comprueba que el token no haya expirado
     public boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 
+    //Devuelve fecha de expiración
     public Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
     }
 
+    //Es un métod0 genérico, que devuelve cualquier dato del token
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
 
+    //Descifra el token mediante la clave secreta
     private Claims extractAllClaims(String token) {
         return Jwts.parser()
-                .setSigningKey(SECRET_KEY) // Usa tu clave secreta
+                .setSigningKey(SECRET_KEY)
                 .parseClaimsJws(token)
                 .getBody();
     }

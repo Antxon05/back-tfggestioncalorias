@@ -14,8 +14,8 @@ import java.time.LocalDate;
 
 @Data
 @Builder(toBuilder = true)
+//Datos que se muestran del usuario
 public class UserInfoDTO {
-
     Integer id;
 
     @NotEmpty
@@ -43,8 +43,4 @@ public class UserInfoDTO {
 
     @NotNull
     PhisicalActivity phisicalActivity;
-
-
-
-
 }

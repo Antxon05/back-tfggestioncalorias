@@ -17,14 +17,12 @@ import org.springframework.stereotype.Service;
 @Service
 @AllArgsConstructor
 public class AuthService {
-
     private final UserAppRepository userAppRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
     private final UserMapper userMapper;
-    private final DailySummaryMapper dailySummaryMapper;
-    private final DailySummaryRepository dailySummaryRepository;
 
+    //Obtiene información de registro y guarda a la base de datos. Devuelve un token y el email
     public AuthResponseDTO register(UserRegisterDTO dto){
         if(userAppRepository.findByEmailContaining(dto.getEmail()).isPresent()){
             throw new RuntimeException("El correo ya existe");
@@ -37,6 +35,7 @@ public class AuthService {
         return new AuthResponseDTO(token, user.getEmail());
     }
 
+    //Obtiene información de login y devuelve un token e email generado para ese usuario
     public AuthResponseDTO login(UserLoginDTO dto){
         UserApp user = userAppRepository.findByEmailContaining(dto.getEmail())
                 .orElseThrow(()-> new RuntimeException("Usuario no encontrado"));

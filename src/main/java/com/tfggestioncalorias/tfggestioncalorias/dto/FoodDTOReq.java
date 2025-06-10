@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 
 @Value
 @Builder(toBuilder = true)
+//Datos para crear una comida nueva en la base de datos
 public class FoodDTOReq {
 
     Integer id;

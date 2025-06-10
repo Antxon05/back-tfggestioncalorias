@@ -11,6 +11,7 @@ public class UserUpdaterService {
     private final UserService userService;
     private final DailySummaryService dailySummaryService;
 
+    //Actualiza el usuario y el dailysummary (Se crea aquí para evitar bucle entre userService y dailySummaryService)
     public String updateUser(String authHeader, UserInfoDTO userdto) {
         String result = userService.updateUser(authHeader, userdto);
         dailySummaryService.updateExistsDailySummary(authHeader);

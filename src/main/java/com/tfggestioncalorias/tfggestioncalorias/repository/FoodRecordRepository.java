@@ -13,14 +13,9 @@ import java.util.Optional;
 
 public interface FoodRecordRepository extends JpaRepository<FoodRecord, Integer> {
     List<FoodRecord> findByUserId(Integer userId);
-
     Optional<FoodRecord> findByIdAndUserId(Integer id, Integer userId);
-
     List<FoodRecord> findByUserIdAndDayMoment(Integer userId, DayMoment dayMoment);
-
     Integer user(UserApp user);
-
     List<FoodRecord> findByUserIdAndDateAndDayMoment(Integer userId, LocalDate date, DayMoment dayMomentEnum);
-
     List<FoodRecord> findByUserIdAndDate(Integer userId, LocalDate date);
 }

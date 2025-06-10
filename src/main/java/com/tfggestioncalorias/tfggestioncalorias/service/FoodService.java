@@ -17,12 +17,11 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class FoodService {
-
     private final FoodMapper foodMapper;
     private final FoodRepository foodRepository;
     private final UserService userService;
 
-    //Si se pasa un name busca por name y si no busca todos
+    //Si se pasa un name busca por name y si no busca todas las comidas disponibles
     public List<FoodDTO> getFoods(String name){
         if(name != null){
             return foodRepository.findByNameContainingIgnoreCase(name)
@@ -37,15 +36,14 @@ public class FoodService {
         }
     }
 
-    //Busca por id
+    //Busca por id de una comida
     public Optional<FoodDTO> getFoodById(Integer id){
         return foodRepository.findById(id).map(foodMapper::toDto);
     }
 
-    //Crea y actualiza si es personalizado y si tiene el mismo id de usuario
+    //Crea o actualiza si es el atributo de isPersonalized es true y si tiene el mismo id de usuario
     public FoodDTO saveFood(FoodDTOReq dto, String authHeader){
         Integer userId = userService.getAuthenticatedUserId(authHeader);
-
         Food food;
 
         if (dto.getIsPersonalized() == null) {
@@ -54,6 +52,7 @@ public class FoodService {
                     .build();
         }
 
+        //Si el DTO recibido tiene id es para ACTUALIZAR
         if (dto.getId() != null && dto.getIsPersonalized() == true) {
             food = foodRepository.findById(dto.getId())
                     .orElseThrow(() -> new RuntimeException("Alimento no encontrado"));
@@ -69,14 +68,13 @@ public class FoodService {
             food.setProtein(dto.getProtein());
 
             return foodMapper.toDto(foodRepository.save(food));
-
         } else {
             food = foodMapper.toEntity(dto, userId);
             return foodMapper.toDto(foodRepository.save(food));
         }
     }
 
-    //Elimina si es personalizado
+    //Elimina si es personalizado por el usuario que se le pasa
     public Optional<FoodDTO> deleteFood(Integer id, String authHeader){
         Integer userId = userService.getAuthenticatedUserId(authHeader);
 

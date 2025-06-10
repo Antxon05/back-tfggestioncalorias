@@ -11,12 +11,9 @@ import org.springframework.stereotype.Component;
 @Component
 @AllArgsConstructor
 public class FoodMapper {
-
-
-    private final UserMapper userMapper;
     private final UserAppRepository userAppRepository;
 
-    //Para los GETTERS, sirve para mostrar la información
+    //Para GETTERS, muestra datos que queremos de Food
     public FoodDTO toDto(Food food){
         Integer createdByUserId = null;
         if (food.getCreatedByUser() != null) {
@@ -35,7 +32,7 @@ public class FoodMapper {
                 .build();
     }
 
-    //Para los POST y PUT, convierte a entidad para registrar a la base de datos
+    //Para POST, convierte a entidad para registrar a la base de datos
     public Food toEntity(FoodDTOReq fooddto, Integer userId){
         Food food = new Food();
         food.setName(fooddto.getName());

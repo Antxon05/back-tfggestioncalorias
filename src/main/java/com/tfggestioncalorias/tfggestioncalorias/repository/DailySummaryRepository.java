@@ -11,8 +11,5 @@ import java.util.Optional;
 
 public interface DailySummaryRepository extends JpaRepository<DailySummary, Integer> {
     Optional<DailySummary> findByUserIdAndDate(Integer userId, LocalDate date);
-
     List<DailySummary> findByUserId(Integer userId);
-
-    Optional<DailySummary> findByUserIdAndId(Integer userId, Integer id);
 }

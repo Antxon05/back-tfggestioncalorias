@@ -25,16 +25,19 @@ public class SecurityConfig {
     private final JwtUtil jwtUtil;
 
 
+    //Se encarga de encriptar la contraseña que le pasamos en texto plano
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    //Usa el filtro de autenticación con el token
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() {
         return new JwtAuthenticationFilter(jwtUtil);
     }
 
+    //Añade permisos para cada ruta, (permitAll --> Tod0 el mundo, authenticated --> Tiene que pasar el token y estar registrado)
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http

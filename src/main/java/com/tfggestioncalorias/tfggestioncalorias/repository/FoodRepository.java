@@ -9,6 +9,5 @@ import java.util.Collection;
 import java.util.List;
 
 public interface FoodRepository extends JpaRepository<Food, Integer> {
-
     List<Food> findByNameContainingIgnoreCase(String name);
 }

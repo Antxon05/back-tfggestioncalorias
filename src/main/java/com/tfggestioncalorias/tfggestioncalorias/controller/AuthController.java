@@ -15,15 +15,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/api/auth")
 public class AuthController {
-
     private final AuthService authService;
 
+    //ENVIAMOS datos de registro (creamos también daily summary)
     @PostMapping("/register")
     public ResponseEntity<AuthResponseDTO> register(@RequestBody UserRegisterDTO dto){
-
         return ResponseEntity.ok(authService.register(dto));
     }
 
+    //ENVIAMOS datos de login (creamos también daily summary)
     @PostMapping("/login")
     public ResponseEntity<AuthResponseDTO> loginUser(@RequestBody UserLoginDTO dto){
             return ResponseEntity.ok(authService.login(dto));

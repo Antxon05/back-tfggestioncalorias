@@ -11,7 +11,6 @@ import java.time.LocalDate;
 @Value
 @Builder(toBuilder = true)
 public class DailySummaryDTO {
-
     Integer id;
 
     @NotNull
@@ -43,6 +42,4 @@ public class DailySummaryDTO {
 
     @NotNull
     BigDecimal goalFats;
-
-
 }

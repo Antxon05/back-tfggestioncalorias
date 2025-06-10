@@ -17,15 +17,11 @@ import java.math.BigDecimal;
 @Service
 @RequiredArgsConstructor
 public class UserService {
-
     private final UserAppRepository userAppRepository;
     private final UserMapper userMapper;
     private final JwtUtil jwtUtil;
 
-    //SERVICIOS DE USUARIO:
-
-
-    //Obtenemos un usuario
+    //Obtenemos un usuario por token
     public ResponseEntity<UserInfoDTO> getUser(String authHeader){
 
         String token = authHeader.replace("Bearer", "").trim();
@@ -38,7 +34,7 @@ public class UserService {
 
     }
 
-    //Obtenemos el Id del usuario logueado
+    //Obtenemos el id del usuario logueado (para otros métodos)
     public Integer getAuthenticatedUserId(String authHeader){
         String token = authHeader.replace("Bearer ", "");
         String email = jwtUtil.extractEmail(token);
@@ -50,6 +46,7 @@ public class UserService {
         }
     }
 
+    //Obtiene las calorías objetivo que tiene establecidas el usuario
     public Integer getTargetCalories(String authHeader){
         String token = authHeader.replace("Bearer ", "");
         String email = jwtUtil.extractEmail(token);
@@ -58,6 +55,7 @@ public class UserService {
             throw new RuntimeException("Usuario no encontrado");
         }
 
+        //Las calculamos
         BigDecimal weight = user.getWeight(); // kg
         Integer height = user.getHeight(); // cm
         Integer age = user.getAge();
@@ -91,7 +89,7 @@ public class UserService {
     }
 
 
-    //Actualizar la información
+    //Actualiza la información del usuario
     public String updateUser(String authHeader, UserInfoDTO userdto){
         String token = authHeader.replace("Bearer ", "");
         String email = jwtUtil.extractEmail(token);
@@ -112,8 +110,6 @@ public class UserService {
             userAppRepository.save(user);
 
             return "Usuario actualizado correctamente";
-
-
     }
 
 }

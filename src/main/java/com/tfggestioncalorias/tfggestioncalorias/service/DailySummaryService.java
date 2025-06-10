@@ -19,15 +19,13 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class DailySummaryService {
-
     private final DailySummaryRepository dailySummaryRepository;
     private final GoalService goalService;
     private final UserService userService;
     private final DailySummaryMapper dailySummaryMapper;
     private final UserAppRepository userAppRepository;
 
-
-    //FuturasMejoras: Usarlo para implementar DatePicker
+    //NO se usa, pero para futuras mejoras, buscar por fechas diferentes, se le pasa token y con el token se obtiene información del usuario
     public List<DailySummaryDTO> getDailySummaries(LocalDate date, String authHeader){
         Integer userId = userService.getAuthenticatedUserId(authHeader);
 
@@ -55,6 +53,7 @@ public class DailySummaryService {
             return existing.map(dailySummaryMapper::toDto);
         }
 
+        //Si no hay un daily creado lo crea aquí
         UserApp userApp = userAppRepository.findById(userId).orElse(null);
         DailySummary dailySummary = dailySummaryMapper.toEntity(userApp);
         dailySummaryRepository.save(dailySummary);
@@ -63,7 +62,7 @@ public class DailySummaryService {
     }
 
 
-    // Actualiza el daily summary basado en el foodRecord que se pasa
+    // Actualiza el daily summary cada vez que registramos una comida (FoodRecord)
     public void updateDailySummary(FoodRecord foodRecord){
         LocalDate today = foodRecord.getDate();
         Integer userId = foodRecord.getUser().getId();
@@ -71,6 +70,8 @@ public class DailySummaryService {
         Optional<DailySummary> optionalSummary = dailySummaryRepository.findByUserIdAndDate(userId, today);
         DailySummary dailySummary = optionalSummary.orElseGet(DailySummary::new); //Si no existe crea uno nuevo
 
+
+        //Suma las calorías consumidas según gramos
         BigDecimal grams = foodRecord.getWeightGm();
         Food food = foodRecord.getFood();
 
@@ -79,6 +80,7 @@ public class DailySummaryService {
         BigDecimal carbsConsumed = grams.multiply(food.getCarbohydrates()).divide(BigDecimal.valueOf(100));
         BigDecimal fatsConsumed = grams.multiply(food.getFats()).divide(BigDecimal.valueOf(100));
 
+        //No puede suceder (Ya lo creamos al loguear), pero en caso de que registremos una comida verifica que si no hay daily crea uno
         if(dailySummary.getId() == null){
             dailySummary.setUser(foodRecord.getUser());
             dailySummary.setDate(today);
@@ -101,7 +103,7 @@ public class DailySummaryService {
             dailySummary.setConsumedFats(fatsConsumed);
 
         }else{
-            //Si existe actualizamos los valores ya definidos
+            //Actualizamos los valores ya definidos
             dailySummary.setConsumedCalories(dailySummary.getConsumedCalories() + caloriesConsumed.intValue());
             dailySummary.setConsumedProtein(dailySummary.getConsumedProtein().add(proteinConsumed));
             dailySummary.setConsumedCarbohydrates(dailySummary.getConsumedCarbohydrates().add(carbsConsumed));
@@ -128,7 +130,7 @@ public class DailySummaryService {
         BigDecimal carbs = grams.multiply(food.getCarbohydrates()).divide(BigDecimal.valueOf(100));
         BigDecimal fats = grams.multiply(food.getFats()).divide(BigDecimal.valueOf(100));
 
-        //actualiza el summary si lo encuentra
+        //actualiza el summary
         summary.setConsumedCalories(summary.getConsumedCalories() - calories.intValue());
         summary.setConsumedProtein(summary.getConsumedProtein().subtract(protein));
         summary.setConsumedCarbohydrates(summary.getConsumedCarbohydrates().subtract(carbs));
@@ -137,6 +139,7 @@ public class DailySummaryService {
         dailySummaryRepository.save(summary);
     }
 
+    //Actualiza el daily summary si el usuario modifica sus datos personales
     public void updateExistsDailySummary(String authHeader){
         Integer userId = userService.getAuthenticatedUserId(authHeader);
         UserApp user = userAppRepository.findById(userId).orElse(null);

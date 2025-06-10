@@ -13,8 +13,8 @@ import java.math.BigDecimal;
 
 @Data
 @Builder(toBuilder = true)
+//Información que se le pasa para actualizar información del usuario
 public class UserUpdateDTO {
-
     Integer id;
 
     @NotEmpty
@@ -38,5 +38,4 @@ public class UserUpdateDTO {
 
     @NotNull
     PhisicalActivity phisicalActivity;
-
 }

@@ -10,6 +10,7 @@ import java.time.LocalDate;
 
 @Value
 @Builder(toBuilder = true)
+//Los datos para registrar un nuevo daily summary
 public class DailySummaryDTOReq {
     Integer id;
 

@@ -19,12 +19,12 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class FoodRecordService {
-
     private final FoodRecordRepository foodRecordRepository;
     private final FoodRecordMapper foodRecordMapper;
     private final UserService userService;
     private final DailySummaryService dailySummaryService;
 
+    //Obtiene un listado de todos los registros de comidas, puede ser por momento de día y día
     public List<FoodRecordDTO> getFoodRecords(String dayMoment, LocalDate date, String authHeader) {
         Integer userId = userService.getAuthenticatedUserId(authHeader);
 
@@ -53,13 +53,14 @@ public class FoodRecordService {
         }
     }
 
+    //Obtiene registro por id del registro
     public Optional<FoodRecordDTO> getFoodRecordById(Integer id, String authHeader){
         Integer userId = userService.getAuthenticatedUserId(authHeader);
 
         return foodRecordRepository.findByIdAndUserId(id, userId).map(foodRecordMapper::toDto);
     }
 
-    //ACTUALIZAR UN FOOD RECORD
+    //Se crea o actualiza un food record de un usuario y con datos nuevos
     public FoodRecordDTO saveFoodRecord(FoodRecordDTOReq dto, String authHeader){
         Integer userId = userService.getAuthenticatedUserId(authHeader);
 
@@ -83,7 +84,7 @@ public class FoodRecordService {
         return foodRecordMapper.toDto(foodRecord);
     }
 
-    //ELIMINAR UN FOOD RECORD
+    //Elimina un food record mediante id
     public Optional<FoodRecordDTO> deleteFoodRecord(Integer id, String authHeader){
         Integer userId = userService.getAuthenticatedUserId(authHeader);
 

@@ -13,10 +13,9 @@ import java.math.BigDecimal;
 
 @Value
 @Builder(toBuilder = true)
+//Información para el registro del usuario
 public class UserRegisterDTO {
-
     Integer id;
-
 
     @NotEmpty
     @Length(max = 100)
@@ -47,5 +46,4 @@ public class UserRegisterDTO {
 
     @NotNull
     PhisicalActivity phisicalActivity;
-    
 }
