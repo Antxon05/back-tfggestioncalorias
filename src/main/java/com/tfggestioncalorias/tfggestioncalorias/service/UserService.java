@@ -46,49 +46,6 @@ public class UserService {
         }
     }
 
-    //Obtiene las calorías objetivo que tiene establecidas el usuario
-    public Integer getTargetCalories(String authHeader){
-        String token = authHeader.replace("Bearer ", "");
-        String email = jwtUtil.extractEmail(token);
-        UserApp user = userAppRepository.findByEmail(email);
-        if(user == null){
-            throw new RuntimeException("Usuario no encontrado");
-        }
-
-        //Las calculamos
-        BigDecimal weight = user.getWeight(); // kg
-        Integer height = user.getHeight(); // cm
-        Integer age = user.getAge();
-        Genre genre = user.getGenre();
-        PhisicalActivity activity = user.getPhisical_activity();
-        Goal goal = user.getGoal();
-
-        double bmr;
-        if (genre == Genre.HOMBRE) {
-            bmr = 10 * weight.doubleValue() + 6.25 * height - 5 * age + 5;
-        } else {
-            bmr = 10 * weight.doubleValue() + 6.25 * height - 5 * age - 161;
-        }
-
-        double activityFactor = switch (activity) {
-            case SEDENTARIO -> 1.2;
-            case LIGERO -> 1.375;
-            case MODERADO -> 1.55;
-            case ACTIVO -> 1.725;
-            case MUY_ACTIVO -> 1.9;
-        };
-
-        double totalCalories = bmr * activityFactor;
-
-        switch (goal) {
-            case PERDER  -> totalCalories -= 500;
-            case AUMENTAR -> totalCalories += 500;
-        }
-
-        return (int) Math.round(totalCalories);
-    }
-
-
     //Actualiza la información del usuario
     public String updateUser(String authHeader, UserInfoDTO userdto){
         String token = authHeader.replace("Bearer ", "");

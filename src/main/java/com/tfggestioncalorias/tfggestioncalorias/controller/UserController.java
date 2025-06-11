@@ -22,13 +22,6 @@ public class UserController {
         return userService.getUser(authHeader);
     }
 
-    //OBTENEMOS las calorías que le corresponden al usuario según sus datos
-    @GetMapping("/targetCalories")
-    public Integer getTargetCalories(@RequestHeader("Authorization") String authHeader){
-        return userService.getTargetCalories(authHeader);
-    }
-
-
     //ACTUALIZAMOS el usuario (también actualiza el daily summary)
     @PostMapping("/update")
     public String updateUser(@RequestHeader("Authorization") String authHeader, @Valid @RequestBody UserInfoDTO userdto){
